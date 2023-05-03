@@ -7,8 +7,21 @@ app.listen(port, () => {
   console.log(`Сервер запущен на http://localhost:${port}`);
 });
 
-app.get("/hello", (req, res) => {
-  res.statusCode = 200;
-  res.setHeader("Content-type", "text/plain");
-  res.send("Привет!");
+app.all("/hello", (req, res, next) => {
+  console.log("all");
+  next();
 });
+
+const cb = (req, res, next) => {
+  console.log("CB");
+  next();
+};
+
+app
+  .route("/user/hello")
+  .get((req, res) => {
+    res.send("Привет!");
+  })
+  .post((req, res) => {
+    res.send("Привет POST!");
+  });
