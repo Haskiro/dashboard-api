@@ -7,6 +7,10 @@ import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { IUserController } from './user.controller.interface';
 
+class User {}
+
+const users = [];
+
 @injectable()
 export class UserController extends BaseController implements IUserController {
 	constructor(@inject(TYPES.ILogger) logger: ILogger) {
@@ -26,6 +30,7 @@ export class UserController extends BaseController implements IUserController {
 	}
 
 	public login(req: Request, res: Response, next: NextFunction): void {
+		users.push(new User());
 		next(new HttpError(401, 'ошибка авторизации', 'login'));
 		// this.ok(res, "login");
 	}
