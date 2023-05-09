@@ -6,10 +6,8 @@ import { TYPES } from '../types';
 import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { IUserController } from './user.controller.interface';
-
-class User {}
-
-const users = [];
+import { UserLoginDTO } from './dto/user-login.dto';
+import { UserRegisterDTO } from './dto/user-register.dto';
 
 @injectable()
 export class UserController extends BaseController implements IUserController {
@@ -29,13 +27,14 @@ export class UserController extends BaseController implements IUserController {
 		]);
 	}
 
-	public login(req: Request, res: Response, next: NextFunction): void {
-		users.push(new User());
+	public login(req: Request<{}, {}, UserLoginDTO>, res: Response, next: NextFunction): void {
+		console.log(req.body);
 		next(new HttpError(401, 'ошибка авторизации', 'login'));
 		// this.ok(res, "login");
 	}
 
-	public register(req: Request, res: Response, next: NextFunction): void {
+	public register(req: Request<{}, {}, UserRegisterDTO>, res: Response, next: NextFunction): void {
+		console.log(req.body);
 		this.ok(res, 'register');
 	}
 }

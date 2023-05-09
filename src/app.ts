@@ -5,6 +5,7 @@ import { ExceptionFilter } from './errors/exception.filter';
 import { ILogger } from './logger/logger.interface';
 import { inject, injectable } from 'inversify';
 import { TYPES } from './types';
+import { json } from 'body-parser';
 import 'reflect-metadata';
 
 @injectable()
@@ -23,11 +24,16 @@ export class App {
 	}
 
 	public async init(): Promise<void> {
+		this.useMiddleware();
 		this.useRoutes();
 		this.useExceptionFilter();
 		this.server = this.app.listen(this.port, () => {
 			this.logger.log(`Сервер запущен на http://localhost:${this.port}`);
 		});
+	}
+
+	useMiddleware(): void {
+		this.app.use(json());
 	}
 
 	public useRoutes(): void {
