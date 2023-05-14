@@ -13,7 +13,7 @@ import { AuthMiddleware } from './common/auth.middleware';
 
 @injectable()
 export class App {
-	private app: Express;
+	public app: Express;
 	private port: number;
 	private server: Server;
 
@@ -36,6 +36,10 @@ export class App {
 		this.server = this.app.listen(this.port, () => {
 			this.logger.log(`Сервер запущен на http://localhost:${this.port}`);
 		});
+	}
+
+	public close(): void {
+		this.server.close();
 	}
 
 	useMiddleware(): void {
